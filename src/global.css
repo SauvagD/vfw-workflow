@@ -1,0 +1,17 @@
+:root {
+  --custom-text-color: #6b7280;
+}
+
+/* Pas bien de faire ca mais, je fais que des types global, plus rapide */
+
+.project-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  height: 100%;
+}
+
+.project-type-grid > div {
+  padding: 12px;
+}
