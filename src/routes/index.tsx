@@ -1,6 +1,7 @@
 import ProjectContactStep from '@/components/project/steps/project-contact-step'
 import ProjectObjectiveStep from '@/components/project/steps/project-objective-step'
 import ProjectReferencesStep from '@/components/project/steps/project-references-step'
+import ProjectSummaryStep from '@/components/project/steps/project-summary-step'
 import { createFileRoute } from '@tanstack/react-router'
 import ProjectTypeStep from '../components/project/steps/project-type-step'
 import {
@@ -16,6 +17,9 @@ export const Route = createFileRoute('/')({
 
 function App() {
   const { step } = useProjectNavigation()
+
+  console.log('step', step)
+
   return (
     <ComponentSwitch value={step}>
       <ComponentSwitchCase value={ProjectStepsEnum.Type}>
@@ -29,6 +33,9 @@ function App() {
       </ComponentSwitchCase>
       <ComponentSwitchCase value={ProjectStepsEnum.Contact}>
         <ProjectContactStep />
+      </ComponentSwitchCase>
+      <ComponentSwitchCase value={ProjectStepsEnum.Summary}>
+        <ProjectSummaryStep />
       </ComponentSwitchCase>
     </ComponentSwitch>
   )

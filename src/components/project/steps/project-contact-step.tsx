@@ -1,10 +1,11 @@
+import { Grid, GridCol, SimpleGrid, Stack, TextInput } from '@mantine/core'
+import { useAtom } from 'jotai'
+import type { ChangeEvent } from 'react'
+
 import ProjectStepLayout from '@/components/project/layout/project-step-layout'
 import ProjectStepSection from '@/components/project/layout/project-step-section'
 import { useProjectFormFieldsValid } from '@/hooks/use-project-fields-valid'
 import { clientFormAtom } from '@/store/project-store'
-import { Grid, GridCol, SimpleGrid, Stack, TextInput } from '@mantine/core'
-import { useAtom } from 'jotai'
-import type { ChangeEvent } from 'react'
 
 const ProjectContactStep = () => {
   const isValid = useProjectFormFieldsValid([
@@ -22,8 +23,6 @@ const ProjectContactStep = () => {
         })),
     }
   }
-
-  console.log('client', client)
 
   return (
     <ProjectStepLayout

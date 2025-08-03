@@ -6,6 +6,7 @@ export enum ProjectStepsEnum {
   References = 'references',
   Tech = 'tech',
   Contact = 'contact',
+  Summary = 'summary',
 }
 
 // Ordre des étapes
@@ -14,7 +15,8 @@ const projectStepsOrder = [
   ProjectStepsEnum.Objectif,
   ProjectStepsEnum.References,
   ProjectStepsEnum.Contact,
-  ProjectStepsEnum.Tech,
+  /*   ProjectStepsEnum.Tech, */
+  ProjectStepsEnum.Summary,
 ]
 
 // Atom principal contenant l'étape actuelle
