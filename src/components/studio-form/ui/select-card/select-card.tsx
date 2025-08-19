@@ -1,5 +1,7 @@
 import { Checkbox, Flex, Group, Stack, Text } from '@mantine/core'
 import type { LucideIcon } from 'lucide-react'
+import classes from "./select-card.module.css"
+
 
 export type SelectCardProps = {
   title: string
@@ -25,6 +27,7 @@ const SelectCard = ({
       p={12}
       checked={checked}
       onClick={onCheck}
+      className={classes.root}
     >
       <Group align="flex-start" wrap="nowrap" h="100%">
         <Flex

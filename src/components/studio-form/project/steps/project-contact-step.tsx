@@ -1,9 +1,9 @@
-import { Grid, GridCol, SimpleGrid, Stack, TextInput } from '@mantine/core'
+import { TextInput } from '@mantine/core'
 import { useAtom } from 'jotai'
 import type { ChangeEvent } from 'react'
 
-import ProjectStepLayout from '@/components/project/layout/project-step-layout'
-import ProjectStepSection from '@/components/project/layout/project-step-section'
+import ProjectStepLayout from '@/components/studio-form/project/layout/project-step-layout'
+import ProjectStepSection from '@/components/studio-form/project/layout/project-step-section'
 import { useProjectFormFieldsValid } from '@/hooks/use-project-fields-valid'
 import { clientFormAtom } from '@/store/project-store'
 
@@ -26,11 +26,18 @@ const ProjectContactStep = () => {
 
   return (
     <ProjectStepLayout
-      title="Quel type de projet 3D souhaitez-vous réaliser ?"
-      description="Sélectionnez la catégorie qui correspond le mieux à votre besoin"
+      title="Votre email et tout est bon !"
+      description="Thanks for taking the time to complete this form. Please enter your email below and we will be in contact within 24 hours."
       isValid={isValid}
     >
-      <Stack gap={30}>
+      <ProjectStepSection>
+        <TextInput
+          label="Email"
+          {...getInputProps('email')}
+          placeholder="votre@email.com"
+        />
+      </ProjectStepSection>
+      {/* <Stack gap={30}>
         <ProjectStepSection title="Informations personnelles">
           <SimpleGrid cols={2}>
             <TextInput
@@ -75,7 +82,7 @@ const ProjectContactStep = () => {
             <GridCol span={12}></GridCol>
           </Grid>
         </ProjectStepSection>
-      </Stack>
+      </Stack> */}
     </ProjectStepLayout>
   )
 }

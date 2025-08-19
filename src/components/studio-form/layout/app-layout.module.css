@@ -1,0 +1,28 @@
+.root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.asidebar {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  align-items: stretch;
+}
+
+.body {
+  display: flex;
+  flex-direction: row;
+  width: 70%;
+  overflow: hidden;
+  padding-block: 100px;
+}
+
+.content {
+  flex: 1;
+}

@@ -10,53 +10,97 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as CallbackClientRouteImport } from './routes/callback-client'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as FormStudioRouteImport } from './routes/form/$studio'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
+import { Route as DashboardClientsRouteImport } from './routes/dashboard/clients'
 
 const CallbackClientRoute = CallbackClientRouteImport.update({
   id: '/callback-client',
   path: '/callback-client',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const FormStudioRoute = FormStudioRouteImport.update({
+  id: '/form/$studio',
+  path: '/form/$studio',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardClientsRoute = DashboardClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/callback-client': typeof CallbackClientRoute
-  '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/clients': typeof DashboardClientsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/form/$studio': typeof FormStudioRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/callback-client': typeof CallbackClientRoute
+  '/dashboard/clients': typeof DashboardClientsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/form/$studio': typeof FormStudioRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/callback-client': typeof CallbackClientRoute
+  '/dashboard/clients': typeof DashboardClientsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/form/$studio': typeof FormStudioRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/callback-client' | '/dashboard'
+  fullPaths:
+    | '/dashboard'
+    | '/callback-client'
+    | '/dashboard/clients'
+    | '/dashboard/settings'
+    | '/form/$studio'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/callback-client' | '/dashboard'
-  id: '__root__' | '/' | '/callback-client' | '/dashboard/'
+  to:
+    | '/callback-client'
+    | '/dashboard/clients'
+    | '/dashboard/settings'
+    | '/form/$studio'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/dashboard'
+    | '/callback-client'
+    | '/dashboard/clients'
+    | '/dashboard/settings'
+    | '/form/$studio'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   CallbackClientRoute: typeof CallbackClientRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
+  FormStudioRoute: typeof FormStudioRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -68,27 +112,64 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CallbackClientRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/': {
       id: '/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
+      path: '/'
+      fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/form/$studio': {
+      id: '/form/$studio'
+      path: '/form/$studio'
+      fullPath: '/form/$studio'
+      preLoaderRoute: typeof FormStudioRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/clients': {
+      id: '/dashboard/clients'
+      path: '/clients'
+      fullPath: '/dashboard/clients'
+      preLoaderRoute: typeof DashboardClientsRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  CallbackClientRoute: CallbackClientRoute,
+interface DashboardRouteRouteChildren {
+  DashboardClientsRoute: typeof DashboardClientsRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardClientsRoute: DashboardClientsRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  CallbackClientRoute: CallbackClientRoute,
+  FormStudioRoute: FormStudioRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,43 +1,73 @@
-import { client, databases } from '@/utils/app-write-util'
+import { account, databases } from '@/utils/app-write-util'
 import { useMutation } from '@tanstack/react-query'
-import { Account, ID } from 'appwrite'
+import { ID, Query } from 'appwrite'
+
+/*
+
+  J'ai besoin de détecter si l'utilisateur est connecté ou non.
+  La logique de la connection d'app write fonctionne par une session. Pour se connecter à une session, il faut 
+  envoyer un email à l'utilisateur avec un lien de connexion. Une fois cela fait, la session sera créer et l'utilisateur connecté
+  Si l'utilisateur n'est pas connecté, alors, il faut soit créer un utilisateur avec l'email, sélectionner, soit au contraire
+  fetch le customer
+
+*/
 
 export function useInitProjectMutation() {
   return useMutation({
     mutationFn: async ({ customer, project }: any) => {
-      const account = new Account(client)
-      const userId = ID.unique()
-      const token = await account.createMagicURLToken(
-        userId,
-        customer.email,
-        'http://localhost:3000/callback-client',
-      )
+      // const session = await account.get()
+      // console.log('session', session)
 
-      console.log('token', token)
-      // Ajouter un record dans la table client avec le contenu du formulaire contact
-      const newCustomer = await databases.createDocument(
+      const clients = await databases.listDocuments(
         '688a5d58002c2c08a1a6',
         '688f3ac200315d2fc5cc',
-        userId,
-        {
-          userId,
-          lastname: customer.lastName,
-          firstname: customer.firstName,
-        },
+        [Query.equal('email', customer.email)],
       )
 
-      const newProject = await databases.createDocument(
+      console.log('clients', clients)
+
+      if (clients.total === 0) {
+        const userId = ID.unique()
+        // Si le client n'existe pas, on le crée
+        const newCustomer = await databases.createDocument(
+          '688a5d58002c2c08a1a6',
+          '688f3ac200315d2fc5cc',
+          userId,
+          {
+            email: customer.email,
+            userId,
+          },
+        )
+        await account.createMagicURLToken(
+          userId,
+          newCustomer.email,
+          'http://localhost:3000/callback-client',
+        )
+        return
+      }
+
+      // Il faudrait vérifier si le client est connecté ou non
+      const client = clients.documents[0]
+
+      await databases.createDocument(
         '688a5d58002c2c08a1a6',
         '688a5d69001d567399ce',
         ID.unique(),
         {
-          client: newCustomer.$id,
+          client: client.$id,
           status: 'pending',
           ...project,
         },
       )
 
-      console.log('newProject', newProject)
+      return
+      if (!session) {
+        await account.createMagicURLToken(
+          client.$id,
+          client.email,
+          'http://localhost:3000/callback-client',
+        )
+      }
     },
   })
 }

@@ -1,5 +1,5 @@
-import ProjectStepLayout from '@/components/project/layout/project-step-layout'
-import ProjectStepSection from '@/components/project/layout/project-step-section'
+import ProjectStepLayout from '@/components/studio-form/project/layout/project-step-layout'
+import ProjectStepSection from '@/components/studio-form/project/layout/project-step-section'
 import { useProjectFormFieldsValid } from '@/hooks/use-project-fields-valid'
 import { projectFormAtom } from '@/store/project-store'
 import {
@@ -15,7 +15,7 @@ import type { DropzoneProps, FileWithPath } from '@mantine/dropzone'
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone'
 import { useListState } from '@mantine/hooks'
 import { useAtom } from 'jotai'
-import { File, PhoneOutgoingIcon, Upload, X } from 'lucide-react'
+import { File, Upload, X } from 'lucide-react'
 import { useEffect } from 'react'
 
 export function ReferencesDropzone(
@@ -38,20 +38,15 @@ export function ReferencesDropzone(
         accept={IMAGE_MIME_TYPE}
         {...props}
       >
-        <Group
-          justify="center"
-          gap="xl"
-          mih={220}
-          style={{ pointerEvents: 'none' }}
-        >
+        <Group justify="center" gap="xl" style={{ pointerEvents: 'none' }}>
           <Dropzone.Accept>
-            <Upload size={52} color="var(--mantine-color-blue-6)" />
+            <Upload size={40} color="var(--mantine-color-blue-6)" />
           </Dropzone.Accept>
           <Dropzone.Reject>
-            <X size={52} color="var(--mantine-color-red-6)" />
+            <X size={40} color="var(--mantine-color-red-6)" />
           </Dropzone.Reject>
           <Dropzone.Idle>
-            <PhoneOutgoingIcon size={52} color="var(--mantine-color-dimmed)" />
+            <Upload size={40} color="var(--mantine-color-dimmed)" />
           </Dropzone.Idle>
 
           <div>
@@ -65,7 +60,7 @@ export function ReferencesDropzone(
         </Group>
       </Dropzone>
       {fileReferences.map((file, index) => (
-        <Card w="100%">
+        <Card w="100%" withBorder p={10}>
           <Group justify="space-between">
             <Group>
               <File />
@@ -98,18 +93,21 @@ const LinkInput = ({ value, onChange, onRemove }) => {
         style={{
           flex: 1,
         }}
+        rightSection={
+          <ActionIcon
+            variant="outline"
+            onClick={onRemove}
+            h="100%"
+            style={{
+              aspectRatio: 1,
+              width: 'auto',
+              border: "unset"
+            }}
+          >
+            <X />
+          </ActionIcon>
+        }
       />
-      <ActionIcon
-        variant="outline"
-        onClick={onRemove}
-        h="100%"
-        style={{
-          aspectRatio: 1,
-          width: 'auto',
-        }}
-      >
-        <X />
-      </ActionIcon>
     </Group>
   )
 }
@@ -118,7 +116,7 @@ const ProjectReferencesStep = () => {
   const isValid = useProjectFormFieldsValid(['urlReferences', 'fileReferences'])
   const [, updateProject] = useAtom(projectFormAtom)
 
-  const [urlReferences, handlers] = useListState<string>([])
+  const [urlReferences, handlers] = useListState<string>([''])
 
   useEffect(() => {
     updateProject((prevProject) => ({
@@ -129,49 +127,39 @@ const ProjectReferencesStep = () => {
 
   return (
     <ProjectStepLayout
-      title="Partagez vos références visuelles"
-      description="Aidez-nous à comprendre le style et l'esthétique souhaités"
+      title="Partagez des liens vers des exemples qui vous inspirent"
       isValid={isValid}
     >
-      <Stack gap={30}>
-        <ProjectStepSection
-          title="Images et documents de référence"
-          description="Uploadez des images, croquis, ou documents qui illustrent votre vision"
-        >
-          <ReferencesDropzone
-            onCompleted={(files) =>
-              updateProject((prevProject) => ({
-                ...prevProject,
-                fileReferences: files,
-              }))
-            }
-          />
-        </ProjectStepSection>
-
-        <ProjectStepSection
-          title="Liens de référence"
-          description="Partagez des liens vers des exemples qui vous inspirent"
-        >
-          <Stack>
-            <Stack gap={8}>
-              {urlReferences?.map((reference, index) => (
-                <LinkInput
-                  value={reference}
-                  onChange={(value) => handlers.setItem(index, value)}
-                  onRemove={() => handlers.remove(index)}
-                />
-              ))}
-            </Stack>
-            <Button
-              variant="subtle"
-              fullWidth
-              onClick={() => handlers.append('')}
-            >
-              Ajouter une référence
-            </Button>
+      <ProjectStepSection>
+        <ReferencesDropzone
+          onCompleted={(files) =>
+            updateProject((prevProject) => ({
+              ...prevProject,
+              fileReferences: files,
+            }))
+          }
+        />
+      </ProjectStepSection>
+      <ProjectStepSection>
+        <Stack>
+          <Stack gap={8}>
+            {urlReferences.map((reference, index) => (
+              <LinkInput
+                value={reference}
+                onChange={(value) => handlers.setItem(index, value)}
+                onRemove={() => handlers.remove(index)}
+              />
+            ))}
           </Stack>
-        </ProjectStepSection>
-      </Stack>
+          <Button
+            variant="subtle"
+            fullWidth
+            onClick={() => handlers.append('')}
+          >
+            Ajouter une référence
+          </Button>
+        </Stack>
+      </ProjectStepSection>
     </ProjectStepLayout>
   )
 }

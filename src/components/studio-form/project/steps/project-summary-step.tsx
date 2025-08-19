@@ -1,5 +1,7 @@
-import { Badge, Button, Card, Group, Stack, Text, Title } from '@mantine/core'
-import { Check, CircleCheck } from 'lucide-react'
+import { projectFormAtom } from '@/store/project-store'
+import { Badge, Card, Group, Stack, Text, Title } from '@mantine/core'
+import { useAtomValue } from 'jotai'
+import { CheckCircle } from 'lucide-react'
 
 const ProjectNextStep = ({
   title,
@@ -11,9 +13,9 @@ const ProjectNextStep = ({
   return (
     <Card withBorder>
       <Group align="start">
-        <Check />
-        <Stack>
-          <Text>{title}</Text>
+        <CheckCircle />
+        <Stack gap={0}>
+          <Text fw={600}>{title}</Text>
           <Text>{description}</Text>
         </Stack>
       </Group>
@@ -22,10 +24,13 @@ const ProjectNextStep = ({
 }
 
 const ProjectSummaryStep = () => {
+  const project = useAtomValue(projectFormAtom)
+  console.log('project', project)
+
   return (
     <Stack justify="center" align="center" c="black">
       <Stack justify="center" align="center">
-        <CircleCheck size={50} />
+        {/* <CircleCheck size={50} /> */}
         <Title>Demande reçue avec succès !</Title>
         <Text>
           Votre projet a été transmis à notre studio. Un espace client a été
@@ -35,9 +40,30 @@ const ProjectSummaryStep = () => {
       <Card>
         <Stack>
           <Stack justify="center" align="center">
-            <Stack>
-              <Title></Title>
-              <Text></Text>
+            <Stack w="100%">
+              <Text>Recapitulatif de votre demander</Text>
+              <Stack
+                align="start"
+                justify="start"
+                p={12}
+                bg={'var(--mantine-primary-color-light)'}
+                style={{
+                  borderRadius: 6,
+                }}
+              >
+                <Group justify="space-between" w="100%">
+                  <Text fw={600}>Type</Text>
+                  <Text>{project.type}</Text>
+                </Group>
+                <Group justify="space-between" w="100%">
+                  <Text fw={600}>Objective</Text>
+                  <Text>{project.objectif}</Text>
+                </Group>
+                <Group justify="space-between" w="100%">
+                  <Text fw={600}>Votre email</Text>
+                  <Text>{project.client.email}</Text>
+                </Group>
+              </Stack>
             </Stack>
 
             <Stack>
@@ -64,7 +90,7 @@ const ProjectSummaryStep = () => {
               </Stack>
             </Stack>
 
-            <Group w="100%">
+            {/* <Group w="100%">
               <Button
                 variant="filled"
                 style={{
@@ -74,7 +100,7 @@ const ProjectSummaryStep = () => {
                 Accéder à mon espace client
               </Button>
               <Button variant="outline">Retour à l'accueil</Button>
-            </Group>
+            </Group> */}
           </Stack>
           <Card withBorder w="100%">
             <Stack align="center">

@@ -1,7 +1,7 @@
 import { Stack, Text } from '@mantine/core'
 
 type ProjectStepSectionProps = {
-  title: string
+  title?: string
   description?: string
   children: React.ReactNode
   tips?: string

@@ -1,0 +1,33 @@
+.root {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.navbar {
+  width: 100%;
+  background-color: white;
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbarInner {
+  max-width: 80%;
+  padding-block: 12px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.body {
+  padding-block: 24px;
+  max-width: 80%;
+  width: 100%;
+  flex: 1;
+}
