@@ -1,6 +1,8 @@
 import { useInitProjectMutation } from '@/api/use-init-project-mutation'
 import { projectFormAtom } from '@/store/project-store'
 import { ProjectStepsEnum } from '@/store/stepper-store'
+import type { ProjectEntity } from '@/types/project-types'
+import { ProjectPlatformEnum, ProjectStatusEnum } from '@/types/project-types'
 import { Button, Group } from '@mantine/core'
 import { useAtomValue } from 'jotai'
 import { useProjectNavigation } from '../../../hooks/use-project-navigation'
@@ -13,28 +15,24 @@ const ProjectStepFooter = ({ isValid }: { isValid: boolean }) => {
   const isLastStep = navigation.step === ProjectStepsEnum.Contact
   const label = navigation.step === ProjectStepsEnum.Contact ? 'Submit' : 'Next'
 
-  console.log({
-    type: project.type,
-    description: project.description,
-    objectif: project.objectif,
-    platform: project.platform,
-  })
-
   const onNext = () => {
     if (isLastStep) {
+      const finalProject = {
+        type: project.type,
+        description: project.description,
+        objectif: project.objectif,
+        platform: project.platform ?? ProjectPlatformEnum.Web,
+        status: ProjectStatusEnum.Draft,
+        fileReferences: project.fileReferences,
+        urlReferences: project.urlReferences,
+      } as ProjectEntity
       initProject.mutate({
         customer: {
-          lastName: project.client.lastName,
-          firstName: project.client.firstName,
-          email: project.client.email,
+          lastName: project.customer.lastName,
+          firstName: project.customer.firstName,
+          email: project.customer.email,
         },
-        project: {
-          type: project.type,
-          description: project.description,
-          objectif: project.objectif,
-          platform: project.platform ?? 'web',
-          status: 'draft',
-        },
+        project: finalProject,
       })
       return
     }

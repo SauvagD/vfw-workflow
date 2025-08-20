@@ -15,7 +15,7 @@ const ProjectStepSection = ({
 }: ProjectStepSectionProps) => {
   return (
     <Stack>
-      <Stack gap={4}>
+      <Stack gap={0}>
         <Text fz={18} fw={500}>
           {title}
         </Text>

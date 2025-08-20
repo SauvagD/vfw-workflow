@@ -35,11 +35,11 @@ const RichSelectCard = ({
             borderRadius: 12,
           }}
           align="center"
-          w={60}
-          h={60}
+          w={50}
+          h={50}
           bg="var(--mantine-color-indigo-light)"
         >
-          <Icon size={30} color="var(--mantine-primary-color-filled)" />
+          <Icon size={26} color="var(--mantine-primary-color-filled)" />
         </Flex>
         <div>
           <Text fw={600} fz={18}>
@@ -50,15 +50,16 @@ const RichSelectCard = ({
           </Text>
         </div>
         <Stack gap={8}>
-          <Text fz={12} fw={500}>
+          <Text fz={12} fw={400}>
             Examples :
           </Text>
-          <Group gap={8}>
+          <Group gap={4}>
             {tags.map((tag) => (
               <Badge
                 variant="light"
-                color="dark"
+                color="gray"
                 radius={6}
+                fw={500}
                 style={{
                   textTransform: 'capitalize',
                 }}

@@ -5,20 +5,20 @@ import type { ChangeEvent } from 'react'
 import ProjectStepLayout from '@/components/project/layout/project-step-layout'
 import ProjectStepSection from '@/components/project/layout/project-step-section'
 import { useProjectFormFieldsValid } from '@/hooks/use-project-fields-valid'
-import { clientFormAtom } from '@/store/project-store'
+import { customerFormAtom } from '@/store/project-store'
 
 const ProjectContactStep = () => {
   const isValid = useProjectFormFieldsValid([
-    { client: ['firstName', 'lastName', 'email'] },
+    { customer: ['firstName', 'lastName', 'email'] },
   ])
-  const [client, updateClient] = useAtom(clientFormAtom)
+  const [customer, updateCustomer] = useAtom(customerFormAtom)
 
-  const getInputProps = (field: keyof typeof client) => {
+  const getInputProps = (field: keyof typeof customer) => {
     return {
-      value: client[field] || '',
+      value: customer[field] || '',
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        updateClient((prevClient) => ({
-          ...prevClient,
+        updateCustomer((prevCustomer) => ({
+          ...prevCustomer,
           [field]: event.target.value,
         })),
     }

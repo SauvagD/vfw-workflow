@@ -15,7 +15,7 @@ import type { DropzoneProps, FileWithPath } from '@mantine/dropzone'
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone'
 import { useListState } from '@mantine/hooks'
 import { useAtom } from 'jotai'
-import { File, PhoneOutgoingIcon, Upload, X } from 'lucide-react'
+import { File, Upload, X } from 'lucide-react'
 import { useEffect } from 'react'
 
 export function ReferencesDropzone(
@@ -23,14 +23,17 @@ export function ReferencesDropzone(
     onCompleted: any
   },
 ) {
-  const [fileReferences, handlers] = useListState<FileWithPath>([])
+  const [project] = useAtom(projectFormAtom)
+
+  const initialFiles = (project.fileReferences || []) as Array<FileWithPath>
+  const [fileReferences, handlers] = useListState<FileWithPath>(initialFiles)
 
   useEffect(() => {
     props.onCompleted(fileReferences)
   }, [fileReferences])
 
   return (
-    <Stack>
+    <Stack w="100%">
       <Dropzone
         onDrop={(files) => handlers.append(...files)}
         onReject={(files) => console.log('rejected files', files)}
@@ -38,51 +41,53 @@ export function ReferencesDropzone(
         accept={IMAGE_MIME_TYPE}
         {...props}
       >
-        <Group
+        <Stack
           justify="center"
-          gap="xl"
-          mih={220}
+          align="center"
+          mih={100}
           style={{ pointerEvents: 'none' }}
         >
           <Dropzone.Accept>
-            <Upload size={52} color="var(--mantine-color-blue-6)" />
+            <Upload size={30} color="var(--mantine-color-blue-6)" />
           </Dropzone.Accept>
           <Dropzone.Reject>
-            <X size={52} color="var(--mantine-color-red-6)" />
+            <X size={30} color="var(--mantine-color-red-6)" />
           </Dropzone.Reject>
           <Dropzone.Idle>
-            <PhoneOutgoingIcon size={52} color="var(--mantine-color-dimmed)" />
+            <Upload size={30} color="var(--mantine-color-dimmed)" />
           </Dropzone.Idle>
 
           <div>
-            <Text size="xl" inline>
+            <Text size="lg" inline ta="center">
               Drag images here or click to select files
             </Text>
-            <Text size="sm" c="dimmed" inline mt={7}>
+            <Text size="sm" c="dimmed" ta="center" inline mt={7}>
               Attach as many files as you like, each file should not exceed 5mb
             </Text>
           </div>
-        </Group>
+        </Stack>
       </Dropzone>
-      {fileReferences.map((file, index) => (
-        <Card w="100%">
-          <Group justify="space-between">
-            <Group>
-              <File />
-              <Stack gap={4}>
-                <Text fz={12}>{file.name}</Text>
-                <Text fz={12}>{file.size}</Text>
-              </Stack>
+      <Stack gap={10}>
+        {fileReferences.map((file, index) => (
+          <Card w="100%" withBorder shadow="none" p={10}>
+            <Group justify="space-between">
+              <Group>
+                <File />
+                <Stack gap={4}>
+                  <Text fz={12}>{file.name}</Text>
+                  <Text fz={12}>{file.size}</Text>
+                </Stack>
+              </Group>
+              <ActionIcon
+                variant="transparent"
+                onClick={() => handlers.remove(index)}
+              >
+                <X size={20} />
+              </ActionIcon>
             </Group>
-            <ActionIcon
-              variant="transparent"
-              onClick={() => handlers.remove(index)}
-            >
-              <X />
-            </ActionIcon>
-          </Group>
-        </Card>
-      ))}
+          </Card>
+        ))}
+      </Stack>
     </Stack>
   )
 }
@@ -116,14 +121,15 @@ const LinkInput = ({ value, onChange, onRemove }) => {
 
 const ProjectReferencesStep = () => {
   const isValid = useProjectFormFieldsValid(['urlReferences', 'fileReferences'])
-  const [, updateProject] = useAtom(projectFormAtom)
+  const [project, updateProject] = useAtom(projectFormAtom)
 
-  const [urlReferences, handlers] = useListState<string>([])
+  const initialUrls = (project.urlReferences || []) as Array<string>
+  const [urlReferences, handlers] = useListState<string>(initialUrls)
 
   useEffect(() => {
     updateProject((prevProject) => ({
       ...prevProject,
-      urlReferences: urlReferences,
+      urlReferences,
     }))
   }, [urlReferences])
 
@@ -133,7 +139,7 @@ const ProjectReferencesStep = () => {
       description="Aidez-nous à comprendre le style et l'esthétique souhaités"
       isValid={isValid}
     >
-      <Stack gap={30}>
+      <Stack gap={30} w="100%">
         <ProjectStepSection
           title="Images et documents de référence"
           description="Uploadez des images, croquis, ou documents qui illustrent votre vision"

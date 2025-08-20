@@ -1,5 +1,6 @@
 import type { RichSelectCardProps } from '@/components/ui/rich-select-card'
 import RichSelectCard from '@/components/ui/rich-select-card'
+import { ProjectTypeEnum } from '@/types/project-types'
 import { useAtom } from 'jotai'
 import {
   Box,
@@ -10,7 +11,7 @@ import {
   PhoneOutgoing,
 } from 'lucide-react'
 import { useProjectFormFieldsValid } from '../../../hooks/use-project-fields-valid'
-import { ProjectTypeEnum, projectFormAtom } from '../../../store/project-store'
+import { projectFormAtom } from '../../../store/project-store'
 import ProjectStepLayout from '../layout/project-step-layout'
 
 const projectTypeConfiguration: Record<
