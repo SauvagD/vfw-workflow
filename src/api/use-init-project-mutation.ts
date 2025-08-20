@@ -10,6 +10,52 @@ import { ID, Query } from 'appwrite'
   Si l'utilisateur n'est pas connecté, alors, il faut soit créer un utilisateur avec l'email, sélectionner, soit au contraire
   fetch le customer
 
+      await databases.createDocument(
+        DATABASE_ID,
+        PROJECT_COLLECTION_ID,
+        projectId,
+        {
+          type: project.type,
+          description: project.description,
+          objectif: project.objectif,
+          platform: project.platform,
+          client: newCustomer.$id,
+          status: ProjectStatusEnum.Draft,
+        },
+      )
+
+      const filesReferences = await Promise.allSettled(
+        project.fileReferences?.map(
+          async (file) =>
+            await storage.createFile('6890f8ed002d39789707', ID.unique(), file),
+        ),
+      )
+
+      const references = await Promise.allSettled(
+        filesReferences.map(
+          async ({ values }) =>
+            await databases.createDocument(
+              DATABASE_ID,
+              '688a5ed80010344c33c5',
+              projectId,
+              {
+                type: 'file',
+                fileId: values?.$id,
+              },
+            ),
+        ),
+      )
+
+      console.log('references', references)
+
+      await databases.updateDocument(
+        DATABASE_ID,
+        '688a5d69001d567399ce',
+        projectId,
+        {
+          reference: references.map(({ value }) => value?.$id),
+        },
+
 */
 
 export function useInitProjectMutation() {
@@ -59,15 +105,6 @@ export function useInitProjectMutation() {
           ...project,
         },
       )
-
-      return
-      if (!session) {
-        await account.createMagicURLToken(
-          client.$id,
-          client.email,
-          'http://localhost:3000/callback-client',
-        )
-      }
     },
   })
 }

@@ -23,14 +23,17 @@ export function ReferencesDropzone(
     onCompleted: any
   },
 ) {
-  const [fileReferences, handlers] = useListState<FileWithPath>([])
+  const [project] = useAtom(projectFormAtom)
+
+  const initialFiles = (project.fileReferences || []) as Array<FileWithPath>
+  const [fileReferences, handlers] = useListState<FileWithPath>(initialFiles)
 
   useEffect(() => {
     props.onCompleted(fileReferences)
   }, [fileReferences])
 
   return (
-    <Stack>
+    <Stack w="100%">
       <Dropzone
         onDrop={(files) => handlers.append(...files)}
         onReject={(files) => console.log('rejected files', files)}
@@ -50,14 +53,14 @@ export function ReferencesDropzone(
           </Dropzone.Idle>
 
           <div>
-            <Text size="xl" inline>
+            <Text size="lg" inline ta="center">
               Drag images here or click to select files
             </Text>
-            <Text size="sm" c="dimmed" inline mt={7}>
+            <Text size="sm" c="dimmed" ta="center" inline mt={7}>
               Attach as many files as you like, each file should not exceed 5mb
             </Text>
           </div>
-        </Group>
+        </Stack>
       </Dropzone>
       {fileReferences.map((file, index) => (
         <Card w="100%" withBorder p={10}>
@@ -69,15 +72,10 @@ export function ReferencesDropzone(
                 <Text fz={12}>{file.size}</Text>
               </Stack>
             </Group>
-            <ActionIcon
-              variant="transparent"
-              onClick={() => handlers.remove(index)}
-            >
-              <X />
-            </ActionIcon>
-          </Group>
-        </Card>
-      ))}
+            </Group>
+          </Card>
+        ))}
+      </Stack>
     </Stack>
   )
 }
@@ -114,14 +112,14 @@ const LinkInput = ({ value, onChange, onRemove }) => {
 
 const ProjectReferencesStep = () => {
   const isValid = useProjectFormFieldsValid(['urlReferences', 'fileReferences'])
-  const [, updateProject] = useAtom(projectFormAtom)
+  const [project, updateProject] = useAtom(projectFormAtom)
 
   const [urlReferences, handlers] = useListState<string>([''])
 
   useEffect(() => {
     updateProject((prevProject) => ({
       ...prevProject,
-      urlReferences: urlReferences,
+      urlReferences,
     }))
   }, [urlReferences])
 
