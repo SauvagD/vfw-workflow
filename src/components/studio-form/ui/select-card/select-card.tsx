@@ -1,6 +1,6 @@
 import { Checkbox, Flex, Group, Stack, Text } from '@mantine/core'
-import type { LucideIcon } from 'lucide-react'
 import classes from "./select-card.module.css"
+import type { LucideIcon } from 'lucide-react'
 
 
 export type SelectCardProps = {

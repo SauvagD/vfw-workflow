@@ -1,3 +1,5 @@
+import { createFileRoute, useLoaderData } from '@tanstack/react-router'
+import { Query } from 'appwrite'
 import AppLayout from '@/components/studio-form/layout/app-layout'
 import ProjectContactStep from '@/components/studio-form/project/steps/project-contact-step'
 import ProjectObjectiveStep from '@/components/studio-form/project/steps/project-objective-step'
@@ -11,8 +13,6 @@ import {
 import { useProjectNavigation } from '@/hooks/use-project-navigation'
 import { ProjectStepsEnum } from '@/store/stepper-store'
 import { databases } from '@/utils/app-write-util'
-import { createFileRoute, useLoaderData } from '@tanstack/react-router'
-import { Query } from 'appwrite'
 
 /*
 
@@ -32,8 +32,6 @@ export const Route = createFileRoute('/form/$studio')({
       '68a05367003c458f2377',
       [Query.equal('reference', params.studio)],
     )
-
-    console.log('studios', studios)
 
     if (studios.total === 0) {
       throw new Error('Studio not found')

@@ -1,18 +1,15 @@
-import ProjectStepLayout from '@/components/studio-form/project/layout/project-step-layout'
-import ProjectStepSection from '@/components/studio-form/project/layout/project-step-section'
-import {
-  ComponentSwitch,
-  ComponentSwitchCase,
-} from '@/components/studio-form/ui/component-switch'
-import type { SelectCardProps } from '@/components/studio-form/ui/select-card/select-card'
-import SelectCard from '@/components/studio-form/ui/select-card/select-card'
-import { useProjectFormFieldsValid } from '@/hooks/use-project-fields-valid'
-import { useProjectNavigation } from '@/hooks/use-project-navigation'
-import { ProjectObjectifEnum, projectFormAtom } from '@/store/project-store'
-import { ProjectObjectiveSubStepEnum } from '@/store/stepper-store'
-import { Text, Textarea } from '@mantine/core'
-import { useAtom } from 'jotai'
-import { Network, ShoppingCart, TargetIcon, Trophy, Tv } from 'lucide-react'
+import { Text } from "@mantine/core";
+import { useAtom } from "jotai";
+import { Network, ShoppingCart, TargetIcon, Trophy, Tv } from "lucide-react";
+
+import type { SelectCardProps } from "@/components/studio-form/ui/select-card/select-card";
+import ProjectStepLayout from "@/components/studio-form/project/layout/project-step-layout";
+import ProjectStepSection from "@/components/studio-form/project/layout/project-step-section";
+import SelectCard from "@/components/studio-form/ui/select-card/select-card";
+import { useProjectNavigation } from "@/hooks/use-project-navigation";
+import { projectFormAtom } from "@/store/project-store";
+import { ProjectObjectifEnum } from "@/types/project-types";
+
 
 const projectObjectiveConfiguration: Record<
   ProjectObjectifEnum,
@@ -49,15 +46,6 @@ const projectObjectiveConfiguration: Record<
     description: 'Stand, présentation physique',
   },
 }
-
-/*
-
-  Il faut que je code une logique me permettant d'avoir des sous steps
-  Pour cela, je pense qu'il faut juste que je change la façon dont je navigue dans les étapes
-  Il faut que je fasse un object, qui indique si une étape spécifique possède des sous-étapes.
-  Je pense qu'il s'agit juste de rendre le composant step, et en fonction de la sous étape choisi, on affiche l'un des composant substep
-
-*/
 
 const ProjectObjectiveSubStep = () => {
   const [{ objectif: selectedObjective }, updateProject] =
@@ -101,51 +89,8 @@ const ProjectObjectiveSubStep = () => {
   )
 }
 
-const ProjectDescriptionSubStep = () => {
-  const isValid = useProjectFormFieldsValid(['description'])
-  const [{ description }, updateProject] = useAtom(projectFormAtom)
-
-  // Placeholder for future implementation
-  return (
-    <ProjectStepLayout
-      title="En quelque mots ?"
-      description="Décrivez votre projet en détail, vos objectifs, votre vision, etc."
-      isValid={isValid}
-    >
-      <Textarea
-        value={description || ''}
-        onChange={(e) =>
-          updateProject((prevProject) => ({
-            ...prevProject,
-            description: e.target.value,
-          }))
-        }
-        placeholder="Décrivez votre projet, votre vision, vos contraintes spécifiques, votre public cible, etc. N'hésitez pas à être détaillé !"
-        fz={14}
-        styles={{
-          input: {
-            height: 100,
-          },
-        }}
-      />
-    </ProjectStepLayout>
-  )
-}
-
 const ProjectObjectiveStep = () => {
-  const { subStep } = useProjectNavigation()
-
   return <ProjectObjectiveSubStep />
-  return (
-    <ComponentSwitch value={subStep || ''}>
-      <ComponentSwitchCase
-        value={ProjectObjectiveSubStepEnum.Objective}
-      ></ComponentSwitchCase>
-      <ComponentSwitchCase value={ProjectObjectiveSubStepEnum.Description}>
-        <ProjectDescriptionSubStep />
-      </ComponentSwitchCase>
-    </ComponentSwitch>
-  )
 }
 
 export default ProjectObjectiveStep

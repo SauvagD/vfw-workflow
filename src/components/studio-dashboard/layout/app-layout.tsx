@@ -1,8 +1,8 @@
 import { Button, CopyButton, Group } from '@mantine/core'
 import { Link, useLoaderData } from '@tanstack/react-router'
 import { Check, Copy, FileText, Settings, Users } from 'lucide-react'
-import type React from 'react'
 import classes from './app-layout.module.css'
+import type React from 'react'
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
     const studio = useLoaderData({ from: '/dashboard' });
@@ -47,17 +47,14 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             {({ copied, copy }) => (
               <Button
                 color="dark"
-                label={copied ? 'Copied' : 'Copy'}
                 variant="subtle"
-                withArrow
-                position="right"
                 onClick={copy}
                 leftSection={copied ? <Check size={16} /> : <Copy size={16} />}
                 style={{
                   border: "1px solid lightgray"
                 }}
               >
-                Copy form url
+                {copied ? 'Copied' : 'Copy'}
               </Button>
             )}
           </CopyButton>

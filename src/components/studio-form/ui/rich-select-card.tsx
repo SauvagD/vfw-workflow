@@ -2,7 +2,7 @@ import { Badge, Checkbox, Flex, Group, Image, Stack, Text } from '@mantine/core'
 import type { LucideIcon } from 'lucide-react'
 
 export type RichSelectCardProps = {
-  title: string 
+  title: string
   description: string
   image: string
   icon: LucideIcon
@@ -32,7 +32,7 @@ const RichSelectCard = ({
       style={{
         overflow: 'hidden',
       }}
-      className='select-card'
+      className="select-card"
     >
       <Stack gap={0} h="100%">
         <Flex pos="relative" h={100} w="100%" top={0} left={0}>
@@ -53,7 +53,7 @@ const RichSelectCard = ({
           </Flex>
           <Image src={image} alt="" h={100} fit="cover" w="100%" />
         </Flex>
-        <Stack p={12} gap={0}>
+        <Stack p={12} gap={20}>
           <div>
             <Text fw={600} fz={18}>
               {title}
@@ -62,25 +62,21 @@ const RichSelectCard = ({
               {description}
             </Text>
           </div>
-          <Stack gap={8}>
-            <Text fz={12} fw={500}>
-              Examples :
-            </Text>
-            <Group gap={8}>
-              {tags.map((tag) => (
-                <Badge
-                  variant="light"
-                  color="dark"
-                  radius={6}
-                  style={{
-                    textTransform: 'capitalize',
-                  }}
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </Group>
-          </Stack>
+
+          <Group gap={8}>
+            {tags.map((tag) => (
+              <Badge
+                variant="light"
+                color="dark"
+                radius={6}
+                style={{
+                  textTransform: 'capitalize',
+                }}
+              >
+                {tag}
+              </Badge>
+            ))}
+          </Group>
         </Stack>
       </Stack>
     </Checkbox.Card>

@@ -1,7 +1,3 @@
-import ProjectStepLayout from '@/components/studio-form/project/layout/project-step-layout'
-import ProjectStepSection from '@/components/studio-form/project/layout/project-step-section'
-import { useProjectFormFieldsValid } from '@/hooks/use-project-fields-valid'
-import { projectFormAtom } from '@/store/project-store'
 import {
   ActionIcon,
   Button,
@@ -11,20 +7,23 @@ import {
   Text,
   TextInput,
 } from '@mantine/core'
-import type { DropzoneProps, FileWithPath } from '@mantine/dropzone'
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone'
 import { useListState } from '@mantine/hooks'
 import { useAtom } from 'jotai'
 import { File, Upload, X } from 'lucide-react'
 import { useEffect } from 'react'
+import type { DropzoneProps, FileWithPath } from '@mantine/dropzone'
+import ProjectStepLayout from '@/components/studio-form/project/layout/project-step-layout'
+import ProjectStepSection from '@/components/studio-form/project/layout/project-step-section'
+import { useProjectFormFieldsValid } from '@/hooks/use-project-fields-valid'
+import { projectFormAtom } from '@/store/project-store'
 
 export function ReferencesDropzone(
   props: Partial<DropzoneProps> & {
-    onCompleted: any
+    onCompleted: (files: Array<FileWithPath | null> | null) => void 
   },
 ) {
   const [project] = useAtom(projectFormAtom)
-
   const initialFiles = (project.fileReferences || []) as Array<FileWithPath>
   const [fileReferences, handlers] = useListState<FileWithPath>(initialFiles)
 
@@ -60,9 +59,9 @@ export function ReferencesDropzone(
               Attach as many files as you like, each file should not exceed 5mb
             </Text>
           </div>
-        </Stack>
+          </Group>
       </Dropzone>
-      {fileReferences.map((file, index) => (
+      {fileReferences.map((file) => (
         <Card w="100%" withBorder p={10}>
           <Group justify="space-between">
             <Group>
@@ -72,15 +71,20 @@ export function ReferencesDropzone(
                 <Text fz={12}>{file.size}</Text>
               </Stack>
             </Group>
-            </Group>
-          </Card>
-        ))}
-      </Stack>
+          </Group>
+        </Card>
+      ))}
     </Stack>
   )
 }
 
-const LinkInput = ({ value, onChange, onRemove }) => {
+type LinkInputProps = {
+  value: string;
+  onChange: (value: string) => void;
+  onRemove: () => void;
+};
+
+const LinkInput = ({ value, onChange, onRemove }: LinkInputProps) => {
   return (
     <Group gap={6}>
       <TextInput
@@ -112,7 +116,7 @@ const LinkInput = ({ value, onChange, onRemove }) => {
 
 const ProjectReferencesStep = () => {
   const isValid = useProjectFormFieldsValid(['urlReferences', 'fileReferences'])
-  const [project, updateProject] = useAtom(projectFormAtom)
+  const [, updateProject] = useAtom(projectFormAtom)
 
   const [urlReferences, handlers] = useListState<string>([''])
 
@@ -127,6 +131,7 @@ const ProjectReferencesStep = () => {
     <ProjectStepLayout
       title="Partagez des liens vers des exemples qui vous inspirent"
       isValid={isValid}
+      skipLabel="Je n'ai pas d'exemple"
     >
       <ProjectStepSection>
         <ReferencesDropzone

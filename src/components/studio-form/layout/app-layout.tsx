@@ -1,6 +1,6 @@
-import StudioWidget from '@/components/studio-form/layout/studio/studio-widget';
 import { Affix } from '@mantine/core';
 import classes from './app-layout.module.css';
+import StudioWidget from '@/components/studio-form/layout/studio/studio-widget';
 
 const AppLayout = ({ children, studio }: { children: React.ReactNode; studio: any }) => {
   return (

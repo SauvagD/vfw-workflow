@@ -1,3 +1,8 @@
+import { Button, Group } from '@mantine/core'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { ArrowLeft } from 'lucide-react'
+
+import { useProjectNavigation } from '../../../../hooks/use-project-navigation'
 import { useInitProjectMutation } from '@/api/use-init-project-mutation'
 import { projectFormAtom } from '@/store/project-store'
 import {
@@ -6,12 +11,8 @@ import {
   isSkippableStepAtom,
   stepperAtom,
 } from '@/store/stepper-store'
-import { Button, Group } from '@mantine/core'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { ArrowLeft } from 'lucide-react'
-import { useProjectNavigation } from '../../../../hooks/use-project-navigation'
 
-const ProjectStepFooter = ({ isValid }: { isValid?: boolean }) => {
+const ProjectStepFooter = ({ isValid, skipLabel = "Faire ça plus tard" }: { isValid?: boolean; skipLabel?: string; }) => {
   const project = useAtomValue(projectFormAtom)
   const navigation = useProjectNavigation()
   const initProject = useInitProjectMutation()
@@ -28,7 +29,7 @@ const ProjectStepFooter = ({ isValid }: { isValid?: boolean }) => {
     if (isLastStep) {
       initProject.mutate({
         customer: {
-          email: project.client.email,
+          email: project.customer.email,
         },
         project: {
           type: project.type,
@@ -64,7 +65,7 @@ const ProjectStepFooter = ({ isValid }: { isValid?: boolean }) => {
       <Group>
         {isSkippable && isValid === false && (
           <Button variant="light" onClick={navigation.skip} fz={18} size="lg">
-            Faire ça plus tard
+            {skipLabel}
           </Button>
         )}
         {noNextButton === false && (

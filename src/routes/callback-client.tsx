@@ -1,11 +1,9 @@
-import { account } from '@/utils/app-write-util'
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/callback-client')({
   component: RouteComponent,
-  beforeLoad: async (context) => {
+/*   beforeLoad: async (context) => {
     const { search } = context.location
-    console.log('search', search)
     if (!search.userId || !search.secret) {
       throw redirect({
         to: '/',
@@ -18,7 +16,7 @@ export const Route = createFileRoute('/callback-client')({
         sessionId: session.$id,
       },
     })
-  },
+  }, */
 })
 
 function RouteComponent() {

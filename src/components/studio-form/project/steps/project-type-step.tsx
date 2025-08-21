@@ -1,13 +1,12 @@
-
+import { Text } from '@mantine/core';
+import { useAtom } from 'jotai';
+import { Box, Building, Camera, Gamepad, PaintRollerIcon, PhoneOutgoing } from 'lucide-react';
+import ProjectStepLayout from '../layout/project-step-layout';
 import type { RichSelectCardProps } from '@/components/studio-form/ui/rich-select-card';
 import RichSelectCard from '@/components/studio-form/ui/rich-select-card';
 import { useProjectNavigation } from '@/hooks/use-project-navigation';
 import { projectFormAtom } from '@/store/project-store';
 import { ProjectTypeEnum } from '@/types/project-types';
-import { Text } from '@mantine/core';
-import { useAtom } from 'jotai';
-import { Box, Building, Camera, PaintRollerIcon, PhoneOutgoing } from 'lucide-react';
-import ProjectStepLayout from '../layout/project-step-layout';
 
 const projectTypeConfiguration: Record<
   ProjectTypeEnum,

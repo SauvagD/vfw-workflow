@@ -1,5 +1,6 @@
+import { projectFormAtom } from '@/store/project-store'
+import type { ProjectEntity } from '@/types/project-types'
 import { useAtomValue } from 'jotai'
-import { projectFormAtom, type ProjectEntity } from '../store/project-store'
 
 type SimpleField = keyof ProjectEntity
 type AdvancedField = Partial<Record<SimpleField, unknown>>
@@ -26,7 +27,7 @@ export const useProjectFormFieldsValid = (input: FieldInput): boolean => {
 
     // Format avancé : { client: [...] }
     if (typeof entry === 'object' && entry !== null) {
-      return Object.entries(entry).every(([key, expectedValue]) => {
+      return Object.entries(entry).every(([key]) => {
         const formValue = form[key as SimpleField]
         if (Array.isArray(formValue)) {
           return formValue.length > 0 && formValue.some((v) => v !== '')

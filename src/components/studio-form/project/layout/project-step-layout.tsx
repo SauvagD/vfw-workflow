@@ -1,4 +1,3 @@
-import { progressAtom } from '@/store/stepper-store'
 import {
   Group,
   Paper,
@@ -12,28 +11,27 @@ import { useMounted } from '@mantine/hooks'
 import { useAtomValue } from 'jotai'
 import React from 'react'
 import ProjectStepFooter from './project-step-footer'
+import { progressAtom } from '@/store/stepper-store'
 
 const ProjectStepLayout = ({
   children,
   title,
   description,
   isValid,
+  skipLabel,
 }: {
   children: React.ReactNode
   title: string | React.ReactNode
   description?: string
   isValid?: boolean
+  skipLabel?: string
 }) => {
   const progress = useAtomValue(progressAtom)
 
   const isMounted = useMounted()
 
   return (
-    <Transition
-      mounted={isMounted}
-      transition="fade-left"
-      duration={500}
-    >
+    <Transition mounted={isMounted} transition="fade-left" duration={500}>
       {(transitionStyle) => {
         return (
           <Paper
@@ -50,9 +48,16 @@ const ProjectStepLayout = ({
                     <Text c="var(--custom-text-color)">{description}</Text>
                   </Stack>
                   <RingProgress
-                    sections={[{ value: progress * 100, color: 'blue' }]}
+                    sections={[
+                      {
+                        value: progress * 100,
+                        color: 'var(--mantine-primary-color-filled)',
+                      },
+                    ]}
                     transitionDuration={250}
                     size={60}
+                    thickness={4}
+                    roundCaps
                   />
                 </Group>
                 <Stack
@@ -63,7 +68,7 @@ const ProjectStepLayout = ({
                   {children}
                 </Stack>
               </Stack>
-              <ProjectStepFooter isValid={isValid} />
+              <ProjectStepFooter isValid={isValid} skipLabel={skipLabel} />
             </Stack>
           </Paper>
         )

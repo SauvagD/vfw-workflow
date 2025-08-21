@@ -1,6 +1,7 @@
 import { Text } from '@mantine/core'
-import type React from 'react'
 import classes from './answer-card.module.css'
+import type React from 'react'
+
 
 type AnswerCardProps = {
   title: string

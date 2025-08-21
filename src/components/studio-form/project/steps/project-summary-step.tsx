@@ -1,7 +1,7 @@
-import { projectFormAtom } from '@/store/project-store'
 import { Badge, Card, Group, Stack, Text, Title } from '@mantine/core'
 import { useAtomValue } from 'jotai'
 import { CheckCircle } from 'lucide-react'
+import { projectFormAtom } from '@/store/project-store'
 
 const ProjectNextStep = ({
   title,
@@ -61,7 +61,7 @@ const ProjectSummaryStep = () => {
                 </Group>
                 <Group justify="space-between" w="100%">
                   <Text fw={600}>Votre email</Text>
-                  <Text>{project.client.email}</Text>
+                  <Text>{project.customer.email}</Text>
                 </Group>
               </Stack>
             </Stack>
